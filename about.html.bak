@@ -1,0 +1,133 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - 360 Booth Rental</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background-color: white;
+      font-family: 'Segoe UI', sans-serif;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 1.5em;
+      text-align: center;
+    }
+
+    header nav {
+      margin-top: 15px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.1rem;
+    }
+
+    header nav a:hover {
+      font-weight: bold;
+      color: #ff6f61;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-top: 10px;
+    }
+
+    .content {
+      text-align: center;
+      max-width: 900px;
+      margin: 3em auto;
+      background-color: #333;
+      padding: 3em 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .content h2 {
+      font-size: 2rem;
+      margin-top: 1.5em;
+      color: white;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #ddd;
+      padding: 0 20px;
+      margin-top: 1em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5em;
+      background-color: #333;
+      color: white;
+      margin-top: 4em;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 2em 1em;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .content h2 {
+        font-size: 1.6rem;
+      }
+
+      .content p {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="FAQ.html">FAQ</a>  
+    </nav>
+    <h1>About 360 Photo Booth Rentals</h1>
+  </header>
+
+  <div class="content">
+    <h2>About Us</h2>
+    <p>
+      At 360 Booth Rentals, we specialize in delivering unforgettable experiences through our state-of-the-art 360 photo booths.
+      Whether you're hosting a wedding, corporate event, birthday party, or any special occasion, our immersive video booth technology
+      captures every angle — transforming moments into dynamic, shareable memories.
+    </p>
+
+    <h2>Our Mission</h2>
+    <p>
+      Our mission is to elevate every event with cutting-edge technology, creative design, and exceptional service. We believe
+      in capturing joy, laughter, and movement — allowing guests to relive the moment in full 360°.
+    </p>
+
+    <h2>Why Choose Us</h2>
+    <p>
+      We combine innovation with reliability. Our team is passionate, professional, and dedicated to making your event memorable. 
+      With customizable setups, modern aesthetics, and high-definition video, we bring a fun and unforgettable experience to your guests.
+    </p>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 360 Booth Rentals. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

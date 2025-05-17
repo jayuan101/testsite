@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - 360 Photo Booth Rentals</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Add your existing styles here */
+  </style>
+</head>
+<body>
+  <header>
+    <h1>360 Photo Booth Rentals - Checkout</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="checkout">
+    <h2>Review Your Cart</h2>
+
+    <div id="cart-items">
+      <p>Rental Duration: <span id="cart-rental-days"></span></p>
+      <p>Price: $<span id="cart-rental-price"></span></p>
+    </div>
+
+    <div id="summary">
+      <p id="total">Subtotal: $299.00</p>
+      <p id="tax">Tax (8%): $23.92</p>
+      <p id="shipping">Shipping: $0.00</p>
+      <p id="grand-total"><strong>Grand Total: $322.92</strong></p>
+    </div>
+
+    <form id="shipping-form">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="address">Shipping Address:</label>

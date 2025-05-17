@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - 360 Photo Booth Rentals</title>
+  <link rel="stylesheet" href="css/style.css">
+    <style>
+    body {
+      background-color: #f8f8f8;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      padding: 2em;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 1.5em;
+      text-align: center;
+    }
+
+    .content {
+      margin-top: 2em;
+    }
+
+    .content h2 {
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body class="faq-page">
+  <header>
+    <h1>360 Photo Booth Rentals</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+  </header>
+
+  <div class="faq-container">
+    <h2 class="faq-title">Frequently Asked Questions</h2>
+
+    <div class="faq-section">
+      <div class="faq-question">What is a 360 Photo Booth?</div>
+      <div class="faq-answer">
+        <p>A 360 photo booth is a unique photo and video experience where guests stand on a rotating platform as a camera spins around them, capturing stunning 360-degree images or videos.</p>
+      </div>
+    </div>
+
+    <div class="faq-section">
+      <div class="faq-question">How do I book a rental?</div>
+      <div class="faq-answer">
+        <p>You can book online through our website by selecting the rental duration and adding it to your cart. Then, proceed to checkout to complete the booking.</p>
+      </div>
+    </div>
+
+    <div class="faq-section">
+      <div class="faq-question">Are there any additional fees?</div>
+      <div class="faq-answer">
+        <p>Additional charges may include taxes and shipping, depending on your location. These will be calculated during checkout.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

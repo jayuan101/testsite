@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - 360 Photo Booth Rentals</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+      padding: 2em;
+      color: #333;
+    }
+    header {
+      background: #333;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    .checkout {
+      background: white;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5em 0 1em 0;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1em;
+    }
+    .checkout-summary {
+      margin-top: 2em;
+      font-size: 1.1rem;
+    }
+    #total-amount {
+      font-weight: bold;
+    }
+    button {
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+    .payment-toggle {
+      margin-top: 1em;
+    }
+    .payment-toggle label {
+      margin-right: 20px;
+      cursor: pointer;
+    }
+    #paypal-button-container {
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Checkout</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="checkout">
+    <h2>Review Your Cart</h2>
+    <p>Rental Duration: <span id="rental-duration">0</span> days</p>
+    <p>Price Per Day: $<span id="rental-price">0.00</span></p>
+
+    <form id="checkout-form">
+      <h3>Contact Information</h3>
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+
+      <h3>Address</h3>
+      <input type="text" id="street" placeholder="Street Address" required />
+      <input type="text" id="city" placeholder="City" required />
+      <input type="text" id="state" placeholder="State" required />
+      <input type="text" id="zip" placeholder="ZIP Code" required />
+
+      <h3>Payment Method</h3>
+      <div class="payment-toggle">
+        <label><input type="radio" name="payment" value="stripe" checked onclick="togglePayment()"> Credit Card</label>
+        <label><input type="radio" name="payment" value="paypal" onclick="togglePayment()"> PayPal</label>
+      </div>
+
+      <div id="stripe-container">
+        <h3>Credit Card Information</h3>
+        <label for="card-number">Card Number</label>
+        <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" />
+
+        <label for="card-expiry">Expiration Date</label>
+        <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" />
+
+        <label for="card-cvv">CVV</label>
+        <input type="text" id="card-cvv" placeholder="123" maxlength="4" />
+      </div>
+
+      <div id="paypal-section" style="display: none;">
+        <h3>Pay Securely with PayPal</h3>
+        <div id="paypal-button-container"></div>
+      </div>
+
+      <div class="checkout-summary">
+        <p>Subtotal: $<span id="subtotal">0.00</span></p>
+        <p>Tax (8%): $<span id="tax">0.00</span></p>
+        <p id="total-amount">Total: $0.00</p>
+      </div>
+
+      <button type="submit" id="submit-button">Complete Purchase</button>
+    </form>
+  </main>
+
+  <!-- PayPal SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+
+  <script>
+    let subtotal = 0, tax = 0, total = 0;
+    let cart = { rentalDays: 1, rentalPrice: 299 };
+
+    function initializeCheckout() {
+      const savedCart = localStorage.getItem('cartItem');
+      if (savedCart) {
+        try {
+          cart = JSON.parse(savedCart);
+        } catch (e) {
+          console.error('Invalid cart data, resetting to default.');
+        }
+      }
+
+      if (!cart.rentalDays || isNaN(cart.rentalDays)) cart.rentalDays = 1;
+      if (!cart.rentalPrice || isNaN(cart.rentalPrice)) cart.rentalPrice = 299;
+
+      document.getElementById('rental-duration').innerText = cart.rentalDays;
+      document.getElementById('rental-price').innerText = cart.rentalPrice.toFixed(2);
+
+      subtotal = cart.rentalDays * cart.rentalPrice;
+      tax = subtotal * 0.08;
+      total = subtotal + tax;
+
+      document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+      document.getElementById('tax').innerText = tax.toFixed(2);
+      document.getElementById('total-amount').innerText = `Total: $${total.toFixed(2)}`;
+    }
+
+    function togglePayment() {
+      const method = document.querySelector('input[name="payment"]:checked').value;
+      document.getElementById('paypal-section').style.display = method === 'paypal' ? 'block' : 'none';
+      document.getElementById('stripe-container').style.display = method === 'stripe' ? 'block' : 'none';
+      document.getElementById('submit-button').style.display = method === 'stripe' ? 'inline-block' : 'none';
+
+      if (method === 'paypal' && !window.paypalRendered) {
+        paypal.Buttons({
+          createOrder: function(data, actions) {
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: total.toFixed(2)
+                }
+              }]
+            });
+          },
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+              alert(`Thank you, ${details.payer.name.given_name}! Your PayPal payment was successful.`);
+              localStorage.removeItem('cartItem');
+            });
+          },
+          onError: function(err) {
+            console.error('PayPal error:', err);
+            alert('An error occurred with PayPal. Please try again.');
+          }
+        }).render('#paypal-button-container');
+        window.paypalRendered = true;
+      }
+    }
+
+    window.onload = () => {
+      initializeCheckout();
+      togglePayment();
+
+      document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const method = document.querySelector('input[name="payment"]:checked').value;
+
+        if (method === 'stripe') {
+          alert('This is a demo. Credit card info entered will not be processed.');
+          // Optionally, validate card inputs here before alert
+          localStorage.removeItem('cartItem');
+          this.reset();
+        }
+      });
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>360 Photo Booth Rentals</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>360 Photo Booth Rentals</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+	  <style>
+    body {
+      background-color: #f8f8f8;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      padding: 2em;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 1.5em;
+      text-align: center;
+    }
+
+    .content {
+      margin-top: 2em;
+    }
+
+    .content h2 {
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+  </style>
+  </header>
+
+  <main class="split-screen">
+    <section class="left">
+      <h2>Rent the 360 Booth!</h2>
+      <p>Make your event unforgettable with our 360 photo booth rental.</p>
+      <button onclick="addToCart()">Add to Cart - $299/day</button>
+    </section>
+
+    <section class="right">
+      <img src="images/photo1.jpg" alt="Booth Image 1" />
+      <img src="images/photo2.jpg" alt="Booth Image 2" />
+      <video controls width="100%">
+        <source src="video/video1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+  </main>
+
+  <!-- Side Cart -->
+  <div id="side-cart">
+    <h3>Your Cart</h3>
+    <div id="cart-items"></div>
+    <p id="cart-summary"></p>
+    <button onclick="proceedToCheckout()">Go to Checkout</button>
+    <button onclick="closeCart()">Close Cart</button>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

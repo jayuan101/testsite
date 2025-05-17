@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>360 Photo Booth Rentals</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background-color: #f8f8f8;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      margin: 0;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 1.5em;
+      text-align: center;
+    }
+
+    header nav {
+      margin-top: 15px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.1rem;
+    }
+
+    header nav a:hover {
+      font-weight: bold;
+      color: #ff6f61;
+    }
+
+    .slideshow-container {
+      position: relative;
+      max-width: 100%;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 400px;
+    }
+
+    .slide img, .slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .prev, .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 18px;
+      padding: 16px;
+      cursor: pointer;
+      border: none;
+      z-index: 1;
+    }
+
+    .prev { left: 0; }
+    .next { right: 0; }
+
+    .dots-container {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .dot {
+      height: 10px;
+      width: 10px;
+      margin: 0 4px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+      cursor: pointer;
+    }
+
+    .active {
+      background-color: #ff6f61;
+    }
+
+    .split-screen {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2em;
+      flex-wrap: wrap;
+    }
+
+    .left, .right {
+      width: 48%;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2em;
+    }
+
+    .right img {
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 12px 25px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #ff6f61;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>360 Photo Booth Rentals</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="FAQ.html">FAQ</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+      <div class="slide"><img src="images/booth1.jpg" alt="360 Booth 1" /></div>
+      <div class="slide"><video class="slide-video" controls><source src="videos/1000048750.mp4" type="video/mp4" /></video></div>
+      <div class="slide"><img src="images/booth2.png" alt="360 Booth 2" /></div>
+      <div class="slide"><video class="slide-video" controls><source src="videos/1000048751.mp4" type="video/mp4" /></video></div>
+
+      <button class="prev" onclick="changeSlide(-1)">❮</button>
+      <button class="next" onclick="changeSlide(1)">❯</button>
+    </div>
+
+    <div class="dots-container">
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+      <span class="dot" onclick="currentSlide(3)"></span>
+      <span class="dot" onclick="currentSlide(4)"></span>
+    </div>
+
+    <!-- Rental Info -->
+    <div class="split-screen">
+      <section class="left">
+        <h2>Rent the 360 Booth!</h2>
+        <p>Make your event unforgettable with our 360 photo booth rental.</p>
+
+        <label for="rental-type">Select Rental Type:</label>
+        <select id="rental-type" onchange="renderDurationOptions()">
+          <option value="hourly" selected>Hourly</option>
+        </select>
+
+        <label for="rental-duration">Select Duration:</label>
+        <select id="rental-duration" onchange="updatePrice()"></select>
+
+        <p id="rental-price">Price: $150 for 1 hour</p>
+        <button onclick="addToCart()">Add to Cart</button>
+      </section>
+
+      <section class="right">
+        <img src="images/booth1.jpg" alt="Booth Image 1" />
+        <img src="images/booth2.png" alt="Booth Image 2" />
+      </section>
+    </div>
+  </main>
+
+  <script>
+    let currentIndex = 0;
+    let slideInterval;
+    let isPaused = false;
+
+    const hourlyRates = {
+      1: 150,
+      2: 280,
+      3: 400,
+      4: 500
+    };
+
+    function showSlides() {
+      const slides = document.getElementsByClassName("slide");
+      const dots = document.getElementsByClassName("dot");
+
+      if (currentIndex >= slides.length) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = slides.length - 1;
+
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove("active");
+      }
+
+      slides[currentIndex].style.display = "block";
+      dots[currentIndex].classList.add("active");
+    }
+
+    function changeSlide(n) {
+      currentIndex += n;
+      showSlides();
+    }
+
+    function currentSlide(n) {
+      currentIndex = n - 1;
+      showSlides();
+    }
+
+    function startSlideshow() {
+      slideInterval = setInterval(() => {
+        if (!isPaused) {
+          currentIndex++;
+          showSlides();
+        }
+      }, 5000);
+    }
+
+    function monitorVideos() {
+      const videos = document.querySelectorAll('.slide-video');
+      videos.forEach(video => {
+        video.addEventListener('play', () => isPaused = true);
+        video.addEventListener('pause', () => isPaused = false);
+        video.addEventListener('ended', () => isPaused = false);
+      });
+    }
+
+    function renderDurationOptions() {
+      const rentalType = document.getElementById('rental-type').value;
+      const durationSelect = document.getElementById('rental-duration');
+      durationSelect.innerHTML = '';
+
+      const rates = rentalType === 'hourly' ? hourlyRates : dailyRates;
+
+      for (let key in rates) {
+        const label = rentalType === 'hourly' ? `${key} hour${key > 1 ? 's' : ''}` : `${key} day${key > 1 ? 's' : ''}`;
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = `${label} - $${rates[key]}`;
+        durationSelect.appendChild(option);
+      }
+
+      updatePrice();
+    }
+
+    function updatePrice() {
+      const rentalType = document.getElementById('rental-type').value;
+      const duration = document.getElementById('rental-duration').value;
+
+      const price = rentalType === 'hourly' ? hourlyRates[duration] : dailyRates[duration];
+      const label = rentalType === 'hourly' ? 'hour' : 'day';
+
+      document.getElementById('rental-price').innerText = `Price: $${price} for ${duration} ${label}${duration > 1 ? 's' : ''}`;
+    }
+
+    function addToCart() {
+      const rentalType = document.getElementById('rental-type').value;
+      const duration = document.getElementById('rental-duration').value;
+      const price = rentalType === 'hourly' ? hourlyRates[duration] : dailyRates[duration];
+
+      const cartItem = {
+        rentalType,
+        rentalDuration: duration,
+        rentalPrice: price
+      };
+
+      localStorage.setItem('cartItem', JSON.stringify(cartItem));
+      window.location.href = 'checkout.html';
+    }
+
+    // Initialize
+    showSlides();
+    monitorVideos();
+    startSlideshow();
+    renderDurationOptions();
+  </script>
+</body>
+</html>
